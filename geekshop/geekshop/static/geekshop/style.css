@@ -1043,3 +1043,8 @@ td:first-child {
 .related-products a:hover .text{
 	display: block;
 }
+
+.related__img {
+    height: 270px;
+    width: 270px;
+}
