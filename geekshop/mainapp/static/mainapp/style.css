@@ -23,3 +23,8 @@
 	box-shadow: none;
 	background-color: #d41306;
 }
+
+.related__img {
+    height: 368px;
+    width: 368px;
+}
