@@ -1,0 +1,45 @@
+[
+  {
+    "category": "Chair",
+    "name": "soft chair",
+    "image": "products_images/comfortChair.jpg",
+    "short_desc": "best chair",
+    "description": "best chair in the world",
+    "price": "1979.56"
+  },
+  {
+    "category": "Sofa",
+    "name": "soft sofa",
+    "image": "products_images/comfortChair.jpg",
+    "short_desc": "best sofa",
+    "description": "best sofa in the world",
+    "price": "1979.56"
+  },
+  {
+    "category": "Chair",
+    "name": "wooden chair",
+    "image": "products_images/post_5bdafd25200e9.jpeg",
+    "short_desc": "so so",
+    "description": "chair from GMO wood",
+    "price": "1010.68",
+    "quantity": 11
+  },
+  {
+    "category": "armchairs",
+    "name": "Soft armchair",
+    "image": "products_images/sofa.jpg",
+    "short_desc": "one of the worst",
+    "description": "one of the worst in the whole world",
+    "price": "150.00",
+    "quantity": 32
+  },
+  {
+    "category": "armchairs",
+    "name": "smth",
+    "image": "products_images/armchair.jpg",
+    "short_desc": "simple armchair",
+    "description": "yes!",
+    "price": "1000.09",
+    "quantity": 2
+  }
+]

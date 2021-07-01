@@ -1,0 +1,78 @@
+[
+  {
+    "model": "mainapp.productcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Chair",
+      "description": "best chair"
+    }
+  },
+  {
+    "model": "mainapp.productcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Sofa",
+      "description": "best sofas"
+    }
+  },
+  {
+    "model": "mainapp.productcategory",
+    "pk": 3,
+    "fields": {
+      "name": "armchairs",
+      "description": "best "
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "soft chair",
+      "image": "products_images/comfortChair.jpg",
+      "short_desc": "best chair",
+      "description": "best chair in the world",
+      "price": "1979.56",
+      "quantity": 198
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "wooden chair",
+      "image": "products_images/post_5bdafd25200e9.jpeg",
+      "short_desc": "so so",
+      "description": "chair from GMO wood",
+      "price": "1010.68",
+      "quantity": 11
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Soft armchair",
+      "image": "products_images/sofa.jpg",
+      "short_desc": "one of the worst",
+      "description": "one of the worst in the whole world",
+      "price": "150.00",
+      "quantity": 32
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 4,
+    "fields": {
+      "category": 3,
+      "name": "smth",
+      "image": "products_images/armchair.jpg",
+      "short_desc": "simple armchair",
+      "description": "yes!",
+      "price": "1000.09",
+      "quantity": 2
+    }
+  }
+]
