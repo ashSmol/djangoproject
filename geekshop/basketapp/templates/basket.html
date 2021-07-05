@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+
+
+            <h3 class="green">Корзина</h3>
+
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Товар</th>
+            <th>количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in basket %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{item.product}}</td>
+            <td>{{item.quantity}}</td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="clr"></div>
+
+</div>
+{% endif %}
+{% endblock %}
+
