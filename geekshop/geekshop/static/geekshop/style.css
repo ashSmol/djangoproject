@@ -1048,3 +1048,8 @@ td:first-child {
     height: 270px;
     width: 270px;
 }
+
+.small_image{
+    height: 70px;
+    width: 70px;
+}
