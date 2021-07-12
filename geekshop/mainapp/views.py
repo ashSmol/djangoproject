@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from basketapp.models import Basket
 from .models import Product, ProductCategory
 
+
 def get_basket(user):
     if user.is_authenticated:
         return Basket.objects.filter(user=user)
@@ -22,13 +23,11 @@ def get_same_products(hot_product):
 
 
 def products(request, pk=None):
-
     title = 'продукты'
     links_menu = ProductCategory.objects.all()
 
     products = Product.objects.all()
-    basket= get_basket(request.user)
-
+    basket = get_basket(request.user)
 
     if pk is not None:
         if pk == 0:
@@ -60,3 +59,12 @@ def products(request, pk=None):
 
     return render(request, 'mainapp/products.html', content)
 
+
+def product(request, pk):
+    title = 'продукты'
+    content = {'title': title,
+               'links_menu': ProductCategory.objects.all(),
+               'product': get_object_or_404(Product, pk=pk),
+               'basket': get_basket(request.user),
+               }
+    return render(request, 'mainapp/product.html', content)
