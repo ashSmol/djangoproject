@@ -9,36 +9,36 @@
         </a>
     </button>
 
-    {% for object in objects %}
+    <table class="table table-striped table-hover">
 
-    <div class="category_record {% if not object.is_active %}
-            not_active
-        {% endif %}">
-        <div class="category_name">
-            {{ object.name|title }}
-        </div>
-        <div class="category_actions">
-            <button>
-                <a href="{% url 'admin_staff:products' object.pk %}">
-                товары категории
-                </a>
-            </button>
-            <button>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for object in objects %}
+    <tr>
+      <th scope="row">{{ object.count }}</th>
+      <td><a href="{% if object.is_active %} {% url 'admin_staff:products' object.pk %} {% else %} # {% endif %} ">{{ object.name|title }} </a> </td>
+      <td>{% if object.is_active %} <button>
                 <a href="{% url 'admin_staff:category_update' object.pk %}">
                 редактировать
                 </a>
-            </button>
-            <button>
+            </button> {% endif %}</td>
+      <td>   {% if object.is_active %}         <button>
                 <a href="{% url 'admin_staff:category_delete' object.pk %}">
                 удалить
                 </a>
-            </button>
-        </div>
-        <div class="category_desc">
-            {{ object.description|title }}
-        </div>
+            </button> {% endif %}</td>
+    </tr>
+     {% endfor%}
+  </tbody>
 
-    </div>
-    {% endfor%}
+</table>
+
 </div>
 {% endblock %}
