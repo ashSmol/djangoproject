@@ -10,38 +10,44 @@
     </a>
 </button>
 <div style=" display:flex">
-{% for object in objects %}
-<div class="card" style="width: 18rem;">
-    <img style="width : 18rem; height: 18rem;"
-            src="/media/{{ object.avatar|default:'users_avatars/default.jpg' }}"
-            alt="{{ object.username }}">
-    <div class="card-body">
-        <h5 class="card-title"> {% if object.is_superuser %}
-            администратор
+    {% for object in objects %}
+    <div class="card" style="width: 18rem;">
+        <img style="width : 18rem; height: 18rem;"
+             src="/media/{{ object.avatar|default:'users_avatars/default.jpg' }}"
+             alt="{{ object.username }}">
+        <div class="card-body">
+            <h5 class="card-title"> {% if object.is_superuser %}
+                администратор
+                {% else %}
+                пользователь
+                {% endif %}</h5>
+            <p class="card-text">{{ object.first_name }} {{ object.second_name }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Login: {{ object.username }}</li>
+            <li class="list-group-item">Возраст: {{ object.age }} лет</li>
+            <li class="list-group-item">Email: {{ object.email }}</li>
+            <li class="list-group-item">Last logged: {{ object.last_login }}</li>
+        </ul>
+        <div class="card-body">
+            {% if object.is_active %}
+            <button>
+                <a class="card-link" href="{% url 'admin_staff:user_update' object.pk %}">
+                    редактировать
+                </a>
+            </button>
+            <button>
+                <a class="card-link" href="{% url 'admin_staff:user_delete' object.pk %}">
+                    удалить
+                </a>
+            </button>
             {% else %}
-            пользователь
-            {% endif %}</h5>
-        <p class="card-text">{{ object.first_name }} {{ object.second_name }}</p>
+            пользователь удален
+            {% endif %}
+        </div>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Login: {{ object.username }} </li>
-        <li class="list-group-item">Возраст: {{ object.age }} лет</li>
-        <li class="list-group-item">Email: {{ object.email }}</li>
-        <li class="list-group-item">Last logged: {{ object.last_login }}</li>
-    </ul>
-    <div class="card-body">
-        <button>
-            <a class="card-link" href="{% url 'admin_staff:user_update' object.pk %}">
-                редактировать
-            </a>
-        </button>
-        <button>
-            <a class="card-link" href="{% if object.is_active %} {% url 'admin_staff:user_delete' object.pk %} {% else %} #{% endif %}">
-                удалить
-            </a>
-        </button>
-    </div>
+    {% endfor%}
 </div>
-{% endfor%}
-</div>
+{% include 'adminapp/includes/inc_pagination.html' %}
+
 {% endblock %}
