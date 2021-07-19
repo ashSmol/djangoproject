@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load tags %}
 
 {% block content %}
 	<div class="container">
@@ -24,20 +25,21 @@
 			<div class="clearfix">
 			</div>
 			<div class="tab-content">
-				{% for product in products_list %}
+				{% for object in objects %}
 				<div class="block">
-					 <a href="#"><img class="related__img" src="/media/{{ product.image }}" alt="">
+<!--					 <a href="#"><img class="related__img" src="/media/{{ product.image }}" alt="">-->
+					 <a href="#"><img class="related__img" src="{{ object.image|media_folder_products }}" alt="">
 						<div class="text">
 							<img src={% static 'geekshop/img/icon-hover.png' %} alt="img">
-							<h4>{{ product.description }}</h4>
-							<p>{{ product.short_desc }}</p>
+							<h4>{{ object.description }}</h4>
+							<p>{{ object.short_desc }}</p>
 						</div> 
 					</a>
 				</div>
 				{% endfor %}
 			</div>
 		</div>
-		
+		{% include 'adminapp/includes/inc_pagination.html' %}
 		<div class="clr"></div>
 
 	</div>

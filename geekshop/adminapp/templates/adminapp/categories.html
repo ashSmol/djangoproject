@@ -14,15 +14,15 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Название категории</th>
+      <th scope="col">Изменить</th>
+      <th scope="col">Удалить</th>
     </tr>
   </thead>
   <tbody>
       {% for object in objects %}
     <tr>
-      <th scope="row">{{ object.count }}</th>
+      <th scope="row">{{ forloop.counter }}</th>
       <td><a href="{% if object.is_active %} {% url 'admin_staff:products' object.pk %} {% else %} # {% endif %} ">{{ object.name|title }} </a> </td>
       <td>{% if object.is_active %} <button>
                 <a href="{% url 'admin_staff:category_update' object.pk %}">
@@ -41,4 +41,5 @@
 </table>
 
 </div>
+{% include 'adminapp/includes/inc_pagination.html' %}
 {% endblock %}
