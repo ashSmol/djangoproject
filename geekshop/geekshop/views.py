@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from mainapp.models import Product, ProductCategory
+from mainapp.models import Product
+
 
 class ProductsListView(ListView):
     model = Product
@@ -18,18 +19,10 @@ class ProductsListView(ListView):
     def get_queryset(self):
         return Product.objects.all().order_by('-is_active')
 
-# def index(request):
-#     title = 'магазин'
-#     products_list = Product.objects.all()
-#     context = {
-#         'title':title,
-#         'products_list':products_list,
-#     }
-#     return render(request, 'index.html', context=context)
 
 def contacts(request):
     title = 'контакты'
     context = {
-        'title':title
+        'title': title
     }
     return render(request, 'contact.html', context=context)
