@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import json
 import os
 from pathlib import Path
 
@@ -37,12 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'mainapp',
     'geekshop',
     'authapp',
     'basketapp',
     'adminapp',
 
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -143,3 +146,14 @@ EMAIL_HOST_PASSWORD = 'geekshop'
 EMAIL_USE_SSL = False
 
 EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+)
+
+with open('geekshop/vk.json', 'r') as f:
+    VK = json.load(f)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = VK['SOCIAL_AUTH_VK_OAUTH2_KEY']
+SOCIAL_AUTH_VK_OAUTH2_SECRET = VK['SOCIAL_AUTH_VK_OAUTH2_SECRET']
