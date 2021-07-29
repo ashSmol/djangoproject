@@ -23,26 +23,34 @@
         <li>
             {% if user.is_authenticated %}
             <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 
-                                   {{ user.first_name|default:'Пользователь' }}
-                                   <span class="caret"></span>
-              </a>
-
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li>                           <a href="{% url 'auth:edit' %}">
-                                           профиль
-                                       </a></li>
-                <li><a href="{% url 'ordersapp:orders_list' %}">
-                                           заказы
-                                       </a></li>
-                <li><a href="{% url 'auth:logout' %}">выйти</a></li>
-              </ul>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    {{ user.username|default:'Пользователь' }}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link text-dark" href="{% url 'auth:edit' %}">
+                            Профиль
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" href="{% url 'ordersapp:orders_list' %}">
+                            Заказы
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" href="{% url 'auth:logout' %}">
+                            Выйти
+                        </a>
+                    </li>
+                </ul>
             </div>
-             {% else %}
+            {% else %}
             <a href="{% url 'auth:login' %}">войти</a>
             {% endif %}
-           </li>
+        </li>
 
     </ul>
     <a href="#" class="search"></a>

@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from adminapp.forms import ShopUserAdminEditForm, ProductCategoryEditForm, ProductEditForm
 from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
 from authapp.models import ShopUser
@@ -13,7 +13,7 @@ from django.views.generic.list import ListView
 from django.utils.decorators import method_decorator
 
 
-class UsersListView(ListView):
+class UsersListView(LoginRequiredMixin, ListView):
     model = ShopUser
     template_name = 'adminapp/users.html'
     context_object_name = 'objects'
@@ -29,7 +29,7 @@ class UsersListView(ListView):
         return ShopUser.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
 
 
-class UserCreateView(CreateView):
+class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
     form_class = ShopUserRegisterForm
     template_name = "adminapp/user_create.html"
@@ -42,7 +42,7 @@ class UserCreateView(CreateView):
         return context
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = ShopUser
     form_class = ShopUserEditForm
     template_name = "adminapp/user_update.html"
@@ -55,7 +55,7 @@ class UserUpdateView(UpdateView):
         return context
 
 
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = ShopUser
     template_name = "adminapp/user_delete.html"
     success_url = reverse_lazy('admin_staff:users')
@@ -68,7 +68,7 @@ class UserDeleteView(DeleteView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class CategoriesListView(ListView):
+class CategoriesListView(LoginRequiredMixin, ListView):
     model = ProductCategory
     template_name = 'adminapp/categories.html'
     context_object_name = 'objects'
@@ -84,21 +84,32 @@ class CategoriesListView(ListView):
         return ProductCategory.objects.all().order_by('-is_active')
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def category_create(request):
-    title = 'Категории/создание'
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    model = ProductCategory
+    form_class = ProductCategoryEditForm
+    template_name = 'adminapp/category_update.html'
+    success_url = '/'
 
-    if request.method == 'POST':
-        user_form = ProductCategoryEditForm(request.POST, request.FILES)
-        if user_form.is_valid():
-            user_form.save()
-            return HttpResponseRedirect(reverse('admin_staff:categories'))
-    else:
-        category_edit_form = ProductCategoryEditForm()
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CategoryCreateView, self).get_context_data()
+        context['title'] = 'Категории/создать'
 
-    content = {'title': title, 'update_form': category_edit_form}
+        return context
 
-    return render(request, 'adminapp/category_update.html', content)
+    #
+    # title = 'Категории/создание'
+    #
+    # if request.method == 'POST':
+    #     user_form = ProductCategoryEditForm(request.POST, request.FILES)
+    #     if user_form.is_valid():
+    #         user_form.save()
+    #         return HttpResponseRedirect(reverse('admin_staff:categories'))
+    # else:
+    #     category_edit_form = ProductCategoryEditForm()
+    #
+    # content = {'title': title, 'update_form': category_edit_form}
+    #
+    # return render(request, 'adminapp/category_update.html', content)
 
 
 @user_passes_test(lambda u: u.is_superuser)
