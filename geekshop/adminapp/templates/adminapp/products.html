@@ -4,7 +4,7 @@
 {% block content %}
 <div class="products_list">
     <button class="new_product">
-        <a href="{% url 'admin_staff:product_create' category.pk %}">
+        <a href="{% url 'adminapp:product_create' category_id %}">
             новый продукт
         </a>
     </button>
@@ -14,7 +14,7 @@
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="/media/{{object.image|default:'products_images/default.jpg'}}" class="img-fluid rounded-start"
+                <img src="/media/{{object.image|default:'products_images/default.png'}}" class="img-fluid rounded-start"
                      alt="{{ object.short_desc }}">
             </div>
             <div class="col-md-8">
@@ -89,4 +89,5 @@
     <!--      </div>-->
     {% endfor%}
 </div>
+{% include 'adminapp/includes/inc_pagination.html' %}
 {% endblock %}

@@ -3,15 +3,15 @@
 
 
 {% block content %}
-  <div class="user_delete">
-    Уверены, что хотите удалить <b>{{ product_to_delete.name }}</b>?
-    <form action="{% url 'admin_staff:product_delete' product_to_delete.pk %}"
+  <div class="product_delete">
+    Уверены, что хотите удалить <b>{{ object.name }}</b>?
+    <form action="{% url 'admin_staff:product_delete' object.pk %}"
           method="post">
       {% csrf_token %}
       <input class="btn btn-danger" type="submit" value="удалить">
     </form>
     <button class="btn btn-success">
-      <a href="{% url 'admin_staff:product_read' product_to_delete.pk %}">
+      <a href="{% url 'admin_staff:product_read' object.pk %}">
         Отмена
       </a>
     </button>
