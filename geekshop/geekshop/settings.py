@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'adminapp',
     'ordersapp',
 
-    'social_django'
+    'social_django',
 
     'debug_toolbar',
     'template_profiler_panel',
