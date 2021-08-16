@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.cache import cache_page
 
 from .models import Product, ProductCategory
 
@@ -24,6 +25,7 @@ def get_same_products(hot_product):
     return Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
 
 
+@cache_page(3600)
 def products(request, pk=None, page=1):
     title = 'продукты/каталог'
 
@@ -70,6 +72,47 @@ def products(request, pk=None, page=1):
     }
 
     return render(request=request, template_name='mainapp/products.html', context=context)
+
+
+def products_ajax(request, pk=None, page=1):
+    title = 'продукты/каталог'
+    if request.is_ajax():
+        links_menu = get_links_menu()
+
+        if pk:
+            if pk == '0':
+                category = {
+                    'pk': 0,
+                    'name': 'все'
+                }
+                products = get_products_orederd_by_price()
+            else:
+                category = get_category(pk)
+                products = get_products_in_category_orederd_by_price(pk)
+
+            paginator = Paginator(products, 2)
+            try:
+                products_paginator = paginator.page(page)
+            except PageNotAnInteger:
+                products_paginator = paginator.page(1)
+            except EmptyPage:
+                products_paginator = paginator.page(paginator.num_pages)
+
+            context = {
+                'title': title,
+                'links_menu': links_menu,
+                'hot_product': hot_product,
+                'same_products': same_products,
+                'products': products_paginator,
+                'category': category,
+            }
+
+            result = render_to_string(
+                'mainapp/includes/inc_products_list_content.html',
+                context=context,
+                request=request)
+
+            return JsonResponse({'result': result})
 
 
 def product(request, pk):
