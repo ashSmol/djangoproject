@@ -1,13 +1,16 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from adminapp.forms import ProductCategoryEditForm, ProductEditForm
 from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
 from authapp.models import ShopUser
-from mainapp.models import Product, ProductCategory
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import connection
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic.list import ListView
+from mainapp.models import Product, ProductCategory
+from django.db.models import F,Q
 
 
 class UsersListView(LoginRequiredMixin, ListView):
@@ -100,10 +103,18 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(CategoryUpdateView, self).get_context_data()
+        context = super(CategoryUpdateView, self).get_context_data(**kwargs)
         context['title'] = 'Категория/изменить'
-
         return context
+
+    def form_valid(self, form):
+        if 'discount' in form.cleaned_data:
+            discount = form.cleaned_data['discount']
+            if discount:
+                self.object.product_set.update(price=F('price') * (1 - discount / 100))
+                db_profile_by_type(self.__class__, 'UPDATE', connection.queries)
+
+        return super().form_valid(form)
 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
@@ -183,3 +194,20 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         self.object.is_active = False
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x['sql'], queries))
+    print(f'db_profile {type} for {prefix}:')
+    [print(query['sql']) for query in update_queries]
+
+
+@receiver(pre_save, sender=ProductCategory)
+def product_is_active_update_productcategory_save(sender, instance, **kwargs):
+    if instance.pk:
+        if instance.is_active:
+            instance.product_set.update(is_active=True)
+        else:
+            instance.product_set.update(is_active=False)
+
+        db_profile_by_type(sender, 'UPDATE', connection.queries)
