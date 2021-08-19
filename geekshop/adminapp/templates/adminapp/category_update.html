@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<div class="row">
   <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
@@ -12,4 +13,5 @@
       к списку категорий
     </a>
   </button>
+  </div>
 {% endblock %}

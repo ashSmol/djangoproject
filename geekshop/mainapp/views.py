@@ -5,8 +5,9 @@ from django.core.cache import cache
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
-
+from django.template.loader import render_to_string
 from .models import Product, ProductCategory
+from django.http import JsonResponse
 
 
 def get_basket(user):
@@ -25,7 +26,7 @@ def get_same_products(hot_product):
     return Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
 
 
-@cache_page(3600)
+# @cache_page(3600)
 def products(request, pk=None, page=1):
     title = 'продукты/каталог'
 
@@ -59,6 +60,7 @@ def products(request, pk=None, page=1):
             'same_products': same_products,
             'products': products_paginator,
             'category': category,
+
         }
         return render(request=request, template_name='mainapp/products.html', context=context)
 
@@ -85,10 +87,10 @@ def products_ajax(request, pk=None, page=1):
                     'pk': 0,
                     'name': 'все'
                 }
-                products = get_products_orederd_by_price()
+                products = get_products_ordered_by_price()
             else:
                 category = get_category(pk)
-                products = get_products_in_category_orederd_by_price(pk)
+                products = get_products_in_category_ordered_by_price(pk)
 
             paginator = Paginator(products, 2)
             try:
@@ -97,12 +99,12 @@ def products_ajax(request, pk=None, page=1):
                 products_paginator = paginator.page(1)
             except EmptyPage:
                 products_paginator = paginator.page(paginator.num_pages)
-
+            hot_product = get_hot_product()
             context = {
                 'title': title,
                 'links_menu': links_menu,
                 'hot_product': hot_product,
-                'same_products': same_products,
+                'same_products': get_same_products(hot_product),
                 'products': products_paginator,
                 'category': category,
             }

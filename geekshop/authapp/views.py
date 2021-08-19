@@ -68,7 +68,7 @@ def register(request):
     else:
         register_form = ShopUserRegisterForm()
         message = ''
-
+    message = ''
     context = {
         'title': title,
         'message': message,
