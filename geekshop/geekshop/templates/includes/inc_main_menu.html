@@ -5,52 +5,58 @@
         <li><a href={% url 'products:index' %}>продукты</a></li>
         <li><a href={% url 'contacts' %}>контакты</a></li>
 
+        {% if basket %}
         <li>
             <a href="{% url 'basket:view' %}">
-        <span>
-            {% if basket %}
+                <span>
               {{ basket.0.total_cost|floatformat:0 }} руб
               ({{ basket.0.total_quantity }} шт)
-            {% endif %}
         </span>
             </a>
         </li>
+        {% endif %}
         {% if user.is_superuser %}
         <li>
             <a href="{% url 'admin_staff:users' %}">админка</a>
         </li>
         {% endif %}
-        <li>
-            {% if user.is_authenticated %}
-            <div class="dropdown">
 
-                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    {{ user.username|default:'Пользователь' }}
+        {% if user.is_authenticated %}
+        <li>
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="" data-toggle="dropdown">
+                    {{ user.first_name|default:'Пользователь' }}
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="nav-link text-dark" href="{% url 'auth:edit' %}">
-                            Профиль
+                        <a href="{% url 'auth:edit' %}">
+                            профиль
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link text-dark" href="{% url 'ordersapp:orders_list' %}">
-                            Заказы
+                        <a href="{% url 'ordersapp:orders_list' %}">
+                            заказы
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link text-dark" href="{% url 'auth:logout' %}">
-                            Выйти
+
+                                        <li>
+                        <a href="{% url 'auth:logout' %}">
+                            выйти
                         </a>
                     </li>
+
                 </ul>
             </div>
-            {% else %}
-            <a href="{% url 'auth:login' %}">войти</a>
-            {% endif %}
         </li>
+
+
+        {% else %}
+        <li>
+            <a href="{% url 'auth:login' %}">войти</a>
+        </li>
+        {% endif %}
+
 
     </ul>
     <a href="#" class="search"></a>
